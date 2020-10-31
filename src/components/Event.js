@@ -13,7 +13,7 @@ const Event = (props) => {
         <Card.Body>
           <Card.Title>{props.title}</Card.Title>
           <Card.Text>{props.description}</Card.Text>
-          <Card.Text>{props.capacity}</Card.Text>
+          <Card.Text>Qty.: {props.capacity}</Card.Text>
           <Card.Text>{props.region}</Card.Text>
           {props.deleteButton && (
             <Button variant="danger" onClick={handleDelete}>

@@ -31840,7 +31840,7 @@ function invariant(condition, message) {
 
 var _default = invariant;
 exports.default = _default;
-},{}],"../node_modules/react-router/node_modules/history/esm/history.js":[function(require,module,exports) {
+},{}],"../node_modules/history/esm/history.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34208,7 +34208,7 @@ if ("development" !== "production") {
     global[key] = "esm";
   }
 }
-},{"@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","history":"../node_modules/react-router/node_modules/history/esm/history.js","tiny-warning":"../node_modules/tiny-warning/dist/tiny-warning.esm.js","mini-create-react-context":"../node_modules/mini-create-react-context/dist/esm/index.js","tiny-invariant":"../node_modules/tiny-invariant/dist/tiny-invariant.esm.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","path-to-regexp":"../node_modules/path-to-regexp/index.js","react-is":"../node_modules/react-is/index.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","hoist-non-react-statics":"../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js"}],"../node_modules/connected-react-router/esm/actions.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","history":"../node_modules/history/esm/history.js","tiny-warning":"../node_modules/tiny-warning/dist/tiny-warning.esm.js","mini-create-react-context":"../node_modules/mini-create-react-context/dist/esm/index.js","tiny-invariant":"../node_modules/tiny-invariant/dist/tiny-invariant.esm.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","path-to-regexp":"../node_modules/path-to-regexp/index.js","react-is":"../node_modules/react-is/index.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","hoist-non-react-statics":"../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js"}],"../node_modules/connected-react-router/esm/actions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35098,953 +35098,7 @@ exports.getSearch = getSearch;
 exports.getHash = getHash;
 exports.getAction = getAction;
 exports.getLocation = getLocation;
-},{"./ConnectedRouter":"../node_modules/connected-react-router/esm/ConnectedRouter.js","./reducer":"../node_modules/connected-react-router/esm/reducer.js","./selectors":"../node_modules/connected-react-router/esm/selectors.js","./structure/plain":"../node_modules/connected-react-router/esm/structure/plain/index.js","./actions":"../node_modules/connected-react-router/esm/actions.js","./middleware":"../node_modules/connected-react-router/esm/middleware.js"}],"../node_modules/react-router-dom/node_modules/history/esm/history.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createBrowserHistory = createBrowserHistory;
-exports.createHashHistory = createHashHistory;
-exports.createMemoryHistory = createMemoryHistory;
-exports.createLocation = createLocation;
-exports.locationsAreEqual = locationsAreEqual;
-exports.parsePath = parsePath;
-exports.createPath = createPath;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _resolvePathname = _interopRequireDefault(require("resolve-pathname"));
-
-var _valueEqual = _interopRequireDefault(require("value-equal"));
-
-var _tinyWarning = _interopRequireDefault(require("tiny-warning"));
-
-var _tinyInvariant = _interopRequireDefault(require("tiny-invariant"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function addLeadingSlash(path) {
-  return path.charAt(0) === '/' ? path : '/' + path;
-}
-
-function stripLeadingSlash(path) {
-  return path.charAt(0) === '/' ? path.substr(1) : path;
-}
-
-function hasBasename(path, prefix) {
-  return path.toLowerCase().indexOf(prefix.toLowerCase()) === 0 && '/?#'.indexOf(path.charAt(prefix.length)) !== -1;
-}
-
-function stripBasename(path, prefix) {
-  return hasBasename(path, prefix) ? path.substr(prefix.length) : path;
-}
-
-function stripTrailingSlash(path) {
-  return path.charAt(path.length - 1) === '/' ? path.slice(0, -1) : path;
-}
-
-function parsePath(path) {
-  var pathname = path || '/';
-  var search = '';
-  var hash = '';
-  var hashIndex = pathname.indexOf('#');
-
-  if (hashIndex !== -1) {
-    hash = pathname.substr(hashIndex);
-    pathname = pathname.substr(0, hashIndex);
-  }
-
-  var searchIndex = pathname.indexOf('?');
-
-  if (searchIndex !== -1) {
-    search = pathname.substr(searchIndex);
-    pathname = pathname.substr(0, searchIndex);
-  }
-
-  return {
-    pathname: pathname,
-    search: search === '?' ? '' : search,
-    hash: hash === '#' ? '' : hash
-  };
-}
-
-function createPath(location) {
-  var pathname = location.pathname,
-      search = location.search,
-      hash = location.hash;
-  var path = pathname || '/';
-  if (search && search !== '?') path += search.charAt(0) === '?' ? search : "?" + search;
-  if (hash && hash !== '#') path += hash.charAt(0) === '#' ? hash : "#" + hash;
-  return path;
-}
-
-function createLocation(path, state, key, currentLocation) {
-  var location;
-
-  if (typeof path === 'string') {
-    // Two-arg form: push(path, state)
-    location = parsePath(path);
-    location.state = state;
-  } else {
-    // One-arg form: push(location)
-    location = (0, _extends2.default)({}, path);
-    if (location.pathname === undefined) location.pathname = '';
-
-    if (location.search) {
-      if (location.search.charAt(0) !== '?') location.search = '?' + location.search;
-    } else {
-      location.search = '';
-    }
-
-    if (location.hash) {
-      if (location.hash.charAt(0) !== '#') location.hash = '#' + location.hash;
-    } else {
-      location.hash = '';
-    }
-
-    if (state !== undefined && location.state === undefined) location.state = state;
-  }
-
-  try {
-    location.pathname = decodeURI(location.pathname);
-  } catch (e) {
-    if (e instanceof URIError) {
-      throw new URIError('Pathname "' + location.pathname + '" could not be decoded. ' + 'This is likely caused by an invalid percent-encoding.');
-    } else {
-      throw e;
-    }
-  }
-
-  if (key) location.key = key;
-
-  if (currentLocation) {
-    // Resolve incomplete/relative pathname relative to current location.
-    if (!location.pathname) {
-      location.pathname = currentLocation.pathname;
-    } else if (location.pathname.charAt(0) !== '/') {
-      location.pathname = (0, _resolvePathname.default)(location.pathname, currentLocation.pathname);
-    }
-  } else {
-    // When there is no prior location and pathname is empty, set it to /
-    if (!location.pathname) {
-      location.pathname = '/';
-    }
-  }
-
-  return location;
-}
-
-function locationsAreEqual(a, b) {
-  return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash && a.key === b.key && (0, _valueEqual.default)(a.state, b.state);
-}
-
-function createTransitionManager() {
-  var prompt = null;
-
-  function setPrompt(nextPrompt) {
-    "development" !== "production" ? (0, _tinyWarning.default)(prompt == null, 'A history supports only one prompt at a time') : void 0;
-    prompt = nextPrompt;
-    return function () {
-      if (prompt === nextPrompt) prompt = null;
-    };
-  }
-
-  function confirmTransitionTo(location, action, getUserConfirmation, callback) {
-    // TODO: If another transition starts while we're still confirming
-    // the previous one, we may end up in a weird state. Figure out the
-    // best way to handle this.
-    if (prompt != null) {
-      var result = typeof prompt === 'function' ? prompt(location, action) : prompt;
-
-      if (typeof result === 'string') {
-        if (typeof getUserConfirmation === 'function') {
-          getUserConfirmation(result, callback);
-        } else {
-          "development" !== "production" ? (0, _tinyWarning.default)(false, 'A history needs a getUserConfirmation function in order to use a prompt message') : void 0;
-          callback(true);
-        }
-      } else {
-        // Return false from a transition hook to cancel the transition.
-        callback(result !== false);
-      }
-    } else {
-      callback(true);
-    }
-  }
-
-  var listeners = [];
-
-  function appendListener(fn) {
-    var isActive = true;
-
-    function listener() {
-      if (isActive) fn.apply(void 0, arguments);
-    }
-
-    listeners.push(listener);
-    return function () {
-      isActive = false;
-      listeners = listeners.filter(function (item) {
-        return item !== listener;
-      });
-    };
-  }
-
-  function notifyListeners() {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    listeners.forEach(function (listener) {
-      return listener.apply(void 0, args);
-    });
-  }
-
-  return {
-    setPrompt: setPrompt,
-    confirmTransitionTo: confirmTransitionTo,
-    appendListener: appendListener,
-    notifyListeners: notifyListeners
-  };
-}
-
-var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-function getConfirmation(message, callback) {
-  callback(window.confirm(message)); // eslint-disable-line no-alert
-}
-/**
- * Returns true if the HTML5 history API is supported. Taken from Modernizr.
- *
- * https://github.com/Modernizr/Modernizr/blob/master/LICENSE
- * https://github.com/Modernizr/Modernizr/blob/master/feature-detects/history.js
- * changed to avoid false negatives for Windows Phones: https://github.com/reactjs/react-router/issues/586
- */
-
-
-function supportsHistory() {
-  var ua = window.navigator.userAgent;
-  if ((ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) && ua.indexOf('Mobile Safari') !== -1 && ua.indexOf('Chrome') === -1 && ua.indexOf('Windows Phone') === -1) return false;
-  return window.history && 'pushState' in window.history;
-}
-/**
- * Returns true if browser fires popstate on hash change.
- * IE10 and IE11 do not.
- */
-
-
-function supportsPopStateOnHashChange() {
-  return window.navigator.userAgent.indexOf('Trident') === -1;
-}
-/**
- * Returns false if using go(n) with hash history causes a full page reload.
- */
-
-
-function supportsGoWithoutReloadUsingHash() {
-  return window.navigator.userAgent.indexOf('Firefox') === -1;
-}
-/**
- * Returns true if a given popstate event is an extraneous WebKit event.
- * Accounts for the fact that Chrome on iOS fires real popstate events
- * containing undefined state when pressing the back button.
- */
-
-
-function isExtraneousPopstateEvent(event) {
-  return event.state === undefined && navigator.userAgent.indexOf('CriOS') === -1;
-}
-
-var PopStateEvent = 'popstate';
-var HashChangeEvent = 'hashchange';
-
-function getHistoryState() {
-  try {
-    return window.history.state || {};
-  } catch (e) {
-    // IE 11 sometimes throws when accessing window.history.state
-    // See https://github.com/ReactTraining/history/pull/289
-    return {};
-  }
-}
-/**
- * Creates a history object that uses the HTML5 history API including
- * pushState, replaceState, and the popstate event.
- */
-
-
-function createBrowserHistory(props) {
-  if (props === void 0) {
-    props = {};
-  }
-
-  !canUseDOM ? "development" !== "production" ? (0, _tinyInvariant.default)(false, 'Browser history needs a DOM') : (0, _tinyInvariant.default)(false) : void 0;
-  var globalHistory = window.history;
-  var canUseHistory = supportsHistory();
-  var needsHashChangeListener = !supportsPopStateOnHashChange();
-  var _props = props,
-      _props$forceRefresh = _props.forceRefresh,
-      forceRefresh = _props$forceRefresh === void 0 ? false : _props$forceRefresh,
-      _props$getUserConfirm = _props.getUserConfirmation,
-      getUserConfirmation = _props$getUserConfirm === void 0 ? getConfirmation : _props$getUserConfirm,
-      _props$keyLength = _props.keyLength,
-      keyLength = _props$keyLength === void 0 ? 6 : _props$keyLength;
-  var basename = props.basename ? stripTrailingSlash(addLeadingSlash(props.basename)) : '';
-
-  function getDOMLocation(historyState) {
-    var _ref = historyState || {},
-        key = _ref.key,
-        state = _ref.state;
-
-    var _window$location = window.location,
-        pathname = _window$location.pathname,
-        search = _window$location.search,
-        hash = _window$location.hash;
-    var path = pathname + search + hash;
-    "development" !== "production" ? (0, _tinyWarning.default)(!basename || hasBasename(path, basename), 'You are attempting to use a basename on a page whose URL path does not begin ' + 'with the basename. Expected path "' + path + '" to begin with "' + basename + '".') : void 0;
-    if (basename) path = stripBasename(path, basename);
-    return createLocation(path, state, key);
-  }
-
-  function createKey() {
-    return Math.random().toString(36).substr(2, keyLength);
-  }
-
-  var transitionManager = createTransitionManager();
-
-  function setState(nextState) {
-    (0, _extends2.default)(history, nextState);
-    history.length = globalHistory.length;
-    transitionManager.notifyListeners(history.location, history.action);
-  }
-
-  function handlePopState(event) {
-    // Ignore extraneous popstate events in WebKit.
-    if (isExtraneousPopstateEvent(event)) return;
-    handlePop(getDOMLocation(event.state));
-  }
-
-  function handleHashChange() {
-    handlePop(getDOMLocation(getHistoryState()));
-  }
-
-  var forceNextPop = false;
-
-  function handlePop(location) {
-    if (forceNextPop) {
-      forceNextPop = false;
-      setState();
-    } else {
-      var action = 'POP';
-      transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-        if (ok) {
-          setState({
-            action: action,
-            location: location
-          });
-        } else {
-          revertPop(location);
-        }
-      });
-    }
-  }
-
-  function revertPop(fromLocation) {
-    var toLocation = history.location; // TODO: We could probably make this more reliable by
-    // keeping a list of keys we've seen in sessionStorage.
-    // Instead, we just default to 0 for keys we don't know.
-
-    var toIndex = allKeys.indexOf(toLocation.key);
-    if (toIndex === -1) toIndex = 0;
-    var fromIndex = allKeys.indexOf(fromLocation.key);
-    if (fromIndex === -1) fromIndex = 0;
-    var delta = toIndex - fromIndex;
-
-    if (delta) {
-      forceNextPop = true;
-      go(delta);
-    }
-  }
-
-  var initialLocation = getDOMLocation(getHistoryState());
-  var allKeys = [initialLocation.key]; // Public interface
-
-  function createHref(location) {
-    return basename + createPath(location);
-  }
-
-  function push(path, state) {
-    "development" !== "production" ? (0, _tinyWarning.default)(!(typeof path === 'object' && path.state !== undefined && state !== undefined), 'You should avoid providing a 2nd state argument to push when the 1st ' + 'argument is a location-like object that already has state; it is ignored') : void 0;
-    var action = 'PUSH';
-    var location = createLocation(path, state, createKey(), history.location);
-    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-      if (!ok) return;
-      var href = createHref(location);
-      var key = location.key,
-          state = location.state;
-
-      if (canUseHistory) {
-        globalHistory.pushState({
-          key: key,
-          state: state
-        }, null, href);
-
-        if (forceRefresh) {
-          window.location.href = href;
-        } else {
-          var prevIndex = allKeys.indexOf(history.location.key);
-          var nextKeys = allKeys.slice(0, prevIndex + 1);
-          nextKeys.push(location.key);
-          allKeys = nextKeys;
-          setState({
-            action: action,
-            location: location
-          });
-        }
-      } else {
-        "development" !== "production" ? (0, _tinyWarning.default)(state === undefined, 'Browser history cannot push state in browsers that do not support HTML5 history') : void 0;
-        window.location.href = href;
-      }
-    });
-  }
-
-  function replace(path, state) {
-    "development" !== "production" ? (0, _tinyWarning.default)(!(typeof path === 'object' && path.state !== undefined && state !== undefined), 'You should avoid providing a 2nd state argument to replace when the 1st ' + 'argument is a location-like object that already has state; it is ignored') : void 0;
-    var action = 'REPLACE';
-    var location = createLocation(path, state, createKey(), history.location);
-    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-      if (!ok) return;
-      var href = createHref(location);
-      var key = location.key,
-          state = location.state;
-
-      if (canUseHistory) {
-        globalHistory.replaceState({
-          key: key,
-          state: state
-        }, null, href);
-
-        if (forceRefresh) {
-          window.location.replace(href);
-        } else {
-          var prevIndex = allKeys.indexOf(history.location.key);
-          if (prevIndex !== -1) allKeys[prevIndex] = location.key;
-          setState({
-            action: action,
-            location: location
-          });
-        }
-      } else {
-        "development" !== "production" ? (0, _tinyWarning.default)(state === undefined, 'Browser history cannot replace state in browsers that do not support HTML5 history') : void 0;
-        window.location.replace(href);
-      }
-    });
-  }
-
-  function go(n) {
-    globalHistory.go(n);
-  }
-
-  function goBack() {
-    go(-1);
-  }
-
-  function goForward() {
-    go(1);
-  }
-
-  var listenerCount = 0;
-
-  function checkDOMListeners(delta) {
-    listenerCount += delta;
-
-    if (listenerCount === 1 && delta === 1) {
-      window.addEventListener(PopStateEvent, handlePopState);
-      if (needsHashChangeListener) window.addEventListener(HashChangeEvent, handleHashChange);
-    } else if (listenerCount === 0) {
-      window.removeEventListener(PopStateEvent, handlePopState);
-      if (needsHashChangeListener) window.removeEventListener(HashChangeEvent, handleHashChange);
-    }
-  }
-
-  var isBlocked = false;
-
-  function block(prompt) {
-    if (prompt === void 0) {
-      prompt = false;
-    }
-
-    var unblock = transitionManager.setPrompt(prompt);
-
-    if (!isBlocked) {
-      checkDOMListeners(1);
-      isBlocked = true;
-    }
-
-    return function () {
-      if (isBlocked) {
-        isBlocked = false;
-        checkDOMListeners(-1);
-      }
-
-      return unblock();
-    };
-  }
-
-  function listen(listener) {
-    var unlisten = transitionManager.appendListener(listener);
-    checkDOMListeners(1);
-    return function () {
-      checkDOMListeners(-1);
-      unlisten();
-    };
-  }
-
-  var history = {
-    length: globalHistory.length,
-    action: 'POP',
-    location: initialLocation,
-    createHref: createHref,
-    push: push,
-    replace: replace,
-    go: go,
-    goBack: goBack,
-    goForward: goForward,
-    block: block,
-    listen: listen
-  };
-  return history;
-}
-
-var HashChangeEvent$1 = 'hashchange';
-var HashPathCoders = {
-  hashbang: {
-    encodePath: function encodePath(path) {
-      return path.charAt(0) === '!' ? path : '!/' + stripLeadingSlash(path);
-    },
-    decodePath: function decodePath(path) {
-      return path.charAt(0) === '!' ? path.substr(1) : path;
-    }
-  },
-  noslash: {
-    encodePath: stripLeadingSlash,
-    decodePath: addLeadingSlash
-  },
-  slash: {
-    encodePath: addLeadingSlash,
-    decodePath: addLeadingSlash
-  }
-};
-
-function stripHash(url) {
-  var hashIndex = url.indexOf('#');
-  return hashIndex === -1 ? url : url.slice(0, hashIndex);
-}
-
-function getHashPath() {
-  // We can't use window.location.hash here because it's not
-  // consistent across browsers - Firefox will pre-decode it!
-  var href = window.location.href;
-  var hashIndex = href.indexOf('#');
-  return hashIndex === -1 ? '' : href.substring(hashIndex + 1);
-}
-
-function pushHashPath(path) {
-  window.location.hash = path;
-}
-
-function replaceHashPath(path) {
-  window.location.replace(stripHash(window.location.href) + '#' + path);
-}
-
-function createHashHistory(props) {
-  if (props === void 0) {
-    props = {};
-  }
-
-  !canUseDOM ? "development" !== "production" ? (0, _tinyInvariant.default)(false, 'Hash history needs a DOM') : (0, _tinyInvariant.default)(false) : void 0;
-  var globalHistory = window.history;
-  var canGoWithoutReload = supportsGoWithoutReloadUsingHash();
-  var _props = props,
-      _props$getUserConfirm = _props.getUserConfirmation,
-      getUserConfirmation = _props$getUserConfirm === void 0 ? getConfirmation : _props$getUserConfirm,
-      _props$hashType = _props.hashType,
-      hashType = _props$hashType === void 0 ? 'slash' : _props$hashType;
-  var basename = props.basename ? stripTrailingSlash(addLeadingSlash(props.basename)) : '';
-  var _HashPathCoders$hashT = HashPathCoders[hashType],
-      encodePath = _HashPathCoders$hashT.encodePath,
-      decodePath = _HashPathCoders$hashT.decodePath;
-
-  function getDOMLocation() {
-    var path = decodePath(getHashPath());
-    "development" !== "production" ? (0, _tinyWarning.default)(!basename || hasBasename(path, basename), 'You are attempting to use a basename on a page whose URL path does not begin ' + 'with the basename. Expected path "' + path + '" to begin with "' + basename + '".') : void 0;
-    if (basename) path = stripBasename(path, basename);
-    return createLocation(path);
-  }
-
-  var transitionManager = createTransitionManager();
-
-  function setState(nextState) {
-    (0, _extends2.default)(history, nextState);
-    history.length = globalHistory.length;
-    transitionManager.notifyListeners(history.location, history.action);
-  }
-
-  var forceNextPop = false;
-  var ignorePath = null;
-
-  function locationsAreEqual$$1(a, b) {
-    return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash;
-  }
-
-  function handleHashChange() {
-    var path = getHashPath();
-    var encodedPath = encodePath(path);
-
-    if (path !== encodedPath) {
-      // Ensure we always have a properly-encoded hash.
-      replaceHashPath(encodedPath);
-    } else {
-      var location = getDOMLocation();
-      var prevLocation = history.location;
-      if (!forceNextPop && locationsAreEqual$$1(prevLocation, location)) return; // A hashchange doesn't always == location change.
-
-      if (ignorePath === createPath(location)) return; // Ignore this change; we already setState in push/replace.
-
-      ignorePath = null;
-      handlePop(location);
-    }
-  }
-
-  function handlePop(location) {
-    if (forceNextPop) {
-      forceNextPop = false;
-      setState();
-    } else {
-      var action = 'POP';
-      transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-        if (ok) {
-          setState({
-            action: action,
-            location: location
-          });
-        } else {
-          revertPop(location);
-        }
-      });
-    }
-  }
-
-  function revertPop(fromLocation) {
-    var toLocation = history.location; // TODO: We could probably make this more reliable by
-    // keeping a list of paths we've seen in sessionStorage.
-    // Instead, we just default to 0 for paths we don't know.
-
-    var toIndex = allPaths.lastIndexOf(createPath(toLocation));
-    if (toIndex === -1) toIndex = 0;
-    var fromIndex = allPaths.lastIndexOf(createPath(fromLocation));
-    if (fromIndex === -1) fromIndex = 0;
-    var delta = toIndex - fromIndex;
-
-    if (delta) {
-      forceNextPop = true;
-      go(delta);
-    }
-  } // Ensure the hash is encoded properly before doing anything else.
-
-
-  var path = getHashPath();
-  var encodedPath = encodePath(path);
-  if (path !== encodedPath) replaceHashPath(encodedPath);
-  var initialLocation = getDOMLocation();
-  var allPaths = [createPath(initialLocation)]; // Public interface
-
-  function createHref(location) {
-    var baseTag = document.querySelector('base');
-    var href = '';
-
-    if (baseTag && baseTag.getAttribute('href')) {
-      href = stripHash(window.location.href);
-    }
-
-    return href + '#' + encodePath(basename + createPath(location));
-  }
-
-  function push(path, state) {
-    "development" !== "production" ? (0, _tinyWarning.default)(state === undefined, 'Hash history cannot push state; it is ignored') : void 0;
-    var action = 'PUSH';
-    var location = createLocation(path, undefined, undefined, history.location);
-    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-      if (!ok) return;
-      var path = createPath(location);
-      var encodedPath = encodePath(basename + path);
-      var hashChanged = getHashPath() !== encodedPath;
-
-      if (hashChanged) {
-        // We cannot tell if a hashchange was caused by a PUSH, so we'd
-        // rather setState here and ignore the hashchange. The caveat here
-        // is that other hash histories in the page will consider it a POP.
-        ignorePath = path;
-        pushHashPath(encodedPath);
-        var prevIndex = allPaths.lastIndexOf(createPath(history.location));
-        var nextPaths = allPaths.slice(0, prevIndex + 1);
-        nextPaths.push(path);
-        allPaths = nextPaths;
-        setState({
-          action: action,
-          location: location
-        });
-      } else {
-        "development" !== "production" ? (0, _tinyWarning.default)(false, 'Hash history cannot PUSH the same path; a new entry will not be added to the history stack') : void 0;
-        setState();
-      }
-    });
-  }
-
-  function replace(path, state) {
-    "development" !== "production" ? (0, _tinyWarning.default)(state === undefined, 'Hash history cannot replace state; it is ignored') : void 0;
-    var action = 'REPLACE';
-    var location = createLocation(path, undefined, undefined, history.location);
-    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-      if (!ok) return;
-      var path = createPath(location);
-      var encodedPath = encodePath(basename + path);
-      var hashChanged = getHashPath() !== encodedPath;
-
-      if (hashChanged) {
-        // We cannot tell if a hashchange was caused by a REPLACE, so we'd
-        // rather setState here and ignore the hashchange. The caveat here
-        // is that other hash histories in the page will consider it a POP.
-        ignorePath = path;
-        replaceHashPath(encodedPath);
-      }
-
-      var prevIndex = allPaths.indexOf(createPath(history.location));
-      if (prevIndex !== -1) allPaths[prevIndex] = path;
-      setState({
-        action: action,
-        location: location
-      });
-    });
-  }
-
-  function go(n) {
-    "development" !== "production" ? (0, _tinyWarning.default)(canGoWithoutReload, 'Hash history go(n) causes a full page reload in this browser') : void 0;
-    globalHistory.go(n);
-  }
-
-  function goBack() {
-    go(-1);
-  }
-
-  function goForward() {
-    go(1);
-  }
-
-  var listenerCount = 0;
-
-  function checkDOMListeners(delta) {
-    listenerCount += delta;
-
-    if (listenerCount === 1 && delta === 1) {
-      window.addEventListener(HashChangeEvent$1, handleHashChange);
-    } else if (listenerCount === 0) {
-      window.removeEventListener(HashChangeEvent$1, handleHashChange);
-    }
-  }
-
-  var isBlocked = false;
-
-  function block(prompt) {
-    if (prompt === void 0) {
-      prompt = false;
-    }
-
-    var unblock = transitionManager.setPrompt(prompt);
-
-    if (!isBlocked) {
-      checkDOMListeners(1);
-      isBlocked = true;
-    }
-
-    return function () {
-      if (isBlocked) {
-        isBlocked = false;
-        checkDOMListeners(-1);
-      }
-
-      return unblock();
-    };
-  }
-
-  function listen(listener) {
-    var unlisten = transitionManager.appendListener(listener);
-    checkDOMListeners(1);
-    return function () {
-      checkDOMListeners(-1);
-      unlisten();
-    };
-  }
-
-  var history = {
-    length: globalHistory.length,
-    action: 'POP',
-    location: initialLocation,
-    createHref: createHref,
-    push: push,
-    replace: replace,
-    go: go,
-    goBack: goBack,
-    goForward: goForward,
-    block: block,
-    listen: listen
-  };
-  return history;
-}
-
-function clamp(n, lowerBound, upperBound) {
-  return Math.min(Math.max(n, lowerBound), upperBound);
-}
-/**
- * Creates a history object that stores locations in memory.
- */
-
-
-function createMemoryHistory(props) {
-  if (props === void 0) {
-    props = {};
-  }
-
-  var _props = props,
-      getUserConfirmation = _props.getUserConfirmation,
-      _props$initialEntries = _props.initialEntries,
-      initialEntries = _props$initialEntries === void 0 ? ['/'] : _props$initialEntries,
-      _props$initialIndex = _props.initialIndex,
-      initialIndex = _props$initialIndex === void 0 ? 0 : _props$initialIndex,
-      _props$keyLength = _props.keyLength,
-      keyLength = _props$keyLength === void 0 ? 6 : _props$keyLength;
-  var transitionManager = createTransitionManager();
-
-  function setState(nextState) {
-    (0, _extends2.default)(history, nextState);
-    history.length = history.entries.length;
-    transitionManager.notifyListeners(history.location, history.action);
-  }
-
-  function createKey() {
-    return Math.random().toString(36).substr(2, keyLength);
-  }
-
-  var index = clamp(initialIndex, 0, initialEntries.length - 1);
-  var entries = initialEntries.map(function (entry) {
-    return typeof entry === 'string' ? createLocation(entry, undefined, createKey()) : createLocation(entry, undefined, entry.key || createKey());
-  }); // Public interface
-
-  var createHref = createPath;
-
-  function push(path, state) {
-    "development" !== "production" ? (0, _tinyWarning.default)(!(typeof path === 'object' && path.state !== undefined && state !== undefined), 'You should avoid providing a 2nd state argument to push when the 1st ' + 'argument is a location-like object that already has state; it is ignored') : void 0;
-    var action = 'PUSH';
-    var location = createLocation(path, state, createKey(), history.location);
-    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-      if (!ok) return;
-      var prevIndex = history.index;
-      var nextIndex = prevIndex + 1;
-      var nextEntries = history.entries.slice(0);
-
-      if (nextEntries.length > nextIndex) {
-        nextEntries.splice(nextIndex, nextEntries.length - nextIndex, location);
-      } else {
-        nextEntries.push(location);
-      }
-
-      setState({
-        action: action,
-        location: location,
-        index: nextIndex,
-        entries: nextEntries
-      });
-    });
-  }
-
-  function replace(path, state) {
-    "development" !== "production" ? (0, _tinyWarning.default)(!(typeof path === 'object' && path.state !== undefined && state !== undefined), 'You should avoid providing a 2nd state argument to replace when the 1st ' + 'argument is a location-like object that already has state; it is ignored') : void 0;
-    var action = 'REPLACE';
-    var location = createLocation(path, state, createKey(), history.location);
-    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-      if (!ok) return;
-      history.entries[history.index] = location;
-      setState({
-        action: action,
-        location: location
-      });
-    });
-  }
-
-  function go(n) {
-    var nextIndex = clamp(history.index + n, 0, history.entries.length - 1);
-    var action = 'POP';
-    var location = history.entries[nextIndex];
-    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
-      if (ok) {
-        setState({
-          action: action,
-          location: location,
-          index: nextIndex
-        });
-      } else {
-        // Mimic the behavior of DOM histories by
-        // causing a render after a cancelled POP.
-        setState();
-      }
-    });
-  }
-
-  function goBack() {
-    go(-1);
-  }
-
-  function goForward() {
-    go(1);
-  }
-
-  function canGo(n) {
-    var nextIndex = history.index + n;
-    return nextIndex >= 0 && nextIndex < history.entries.length;
-  }
-
-  function block(prompt) {
-    if (prompt === void 0) {
-      prompt = false;
-    }
-
-    return transitionManager.setPrompt(prompt);
-  }
-
-  function listen(listener) {
-    return transitionManager.appendListener(listener);
-  }
-
-  var history = {
-    length: entries.length,
-    action: 'POP',
-    location: entries[index],
-    index: index,
-    entries: entries,
-    createHref: createHref,
-    push: push,
-    replace: replace,
-    go: go,
-    goBack: goBack,
-    goForward: goForward,
-    canGo: canGo,
-    block: block,
-    listen: listen
-  };
-  return history;
-}
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","resolve-pathname":"../node_modules/resolve-pathname/esm/resolve-pathname.js","value-equal":"../node_modules/value-equal/esm/value-equal.js","tiny-warning":"../node_modules/tiny-warning/dist/tiny-warning.esm.js","tiny-invariant":"../node_modules/tiny-invariant/dist/tiny-invariant.esm.js"}],"../node_modules/react-router-dom/esm/react-router-dom.js":[function(require,module,exports) {
+},{"./ConnectedRouter":"../node_modules/connected-react-router/esm/ConnectedRouter.js","./reducer":"../node_modules/connected-react-router/esm/reducer.js","./selectors":"../node_modules/connected-react-router/esm/selectors.js","./structure/plain":"../node_modules/connected-react-router/esm/structure/plain/index.js","./actions":"../node_modules/connected-react-router/esm/actions.js","./middleware":"../node_modules/connected-react-router/esm/middleware.js"}],"../node_modules/react-router-dom/esm/react-router-dom.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36456,537 +35510,7 @@ if ("development" !== "production") {
     style: _propTypes.default.object
   });
 }
-},{"react-router":"../node_modules/react-router/esm/react-router.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","react":"../node_modules/react/index.js","history":"../node_modules/react-router-dom/node_modules/history/esm/history.js","prop-types":"../node_modules/prop-types/index.js","tiny-warning":"../node_modules/tiny-warning/dist/tiny-warning.esm.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","tiny-invariant":"../node_modules/tiny-invariant/dist/tiny-invariant.esm.js"}],"../node_modules/history/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createBrowserHistory = createBrowserHistory;
-exports.createHashHistory = createHashHistory;
-exports.createMemoryHistory = createMemoryHistory;
-exports.createPath = E;
-exports.parsePath = F;
-exports.Action = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var m,
-    x = m || (exports.Action = m = {});
-exports.Action = m;
-x.Pop = "POP";
-x.Push = "PUSH";
-x.Replace = "REPLACE";
-var y = "production" !== "development" ? function (a) {
-  return Object.freeze(a);
-} : function (a) {
-  return a;
-};
-
-function z(a, b) {
-  if (!a) {
-    "undefined" !== typeof console && console.warn(b);
-
-    try {
-      throw Error(b);
-    } catch (g) {}
-  }
-}
-
-function A(a) {
-  a.preventDefault();
-  a.returnValue = "";
-}
-
-function B() {
-  var a = [];
-  return {
-    get length() {
-      return a.length;
-    },
-
-    push: function (b) {
-      a.push(b);
-      return function () {
-        a = a.filter(function (a) {
-          return a !== b;
-        });
-      };
-    },
-    call: function (b) {
-      a.forEach(function (a) {
-        return a && a(b);
-      });
-    }
-  };
-}
-
-function D() {
-  return Math.random().toString(36).substr(2, 8);
-}
-
-function E(a) {
-  var b = a.pathname,
-      g = a.search;
-  a = a.hash;
-  return (void 0 === b ? "/" : b) + (void 0 === g ? "" : g) + (void 0 === a ? "" : a);
-}
-
-function F(a) {
-  var b = {};
-
-  if (a) {
-    var g = a.indexOf("#");
-    0 <= g && (b.hash = a.substr(g), a = a.substr(0, g));
-    g = a.indexOf("?");
-    0 <= g && (b.search = a.substr(g), a = a.substr(0, g));
-    a && (b.pathname = a);
-  }
-
-  return b;
-}
-
-function createBrowserHistory(a) {
-  function b() {
-    var a = h.location,
-        d = f.state || {};
-    return [d.idx, y({
-      pathname: a.pathname,
-      search: a.search,
-      hash: a.hash,
-      state: d.usr || null,
-      key: d.key || "default"
-    })];
-  }
-
-  function g(a) {
-    return "string" === typeof a ? a : E(a);
-  }
-
-  function t(a, d) {
-    void 0 === d && (d = null);
-    return y((0, _extends2.default)({}, l, {}, "string" === typeof a ? F(a) : a, {
-      state: d,
-      key: D()
-    }));
-  }
-
-  function v(a) {
-    n = a;
-    a = b();
-    q = a[0];
-    l = a[1];
-    c.call({
-      action: n,
-      location: l
-    });
-  }
-
-  function w(a, d) {
-    function c() {
-      w(a, d);
-    }
-
-    var k = m.Push,
-        C = t(a, d);
-
-    if (!e.length || (e.call({
-      action: k,
-      location: C,
-      retry: c
-    }), !1)) {
-      var b = [{
-        usr: C.state,
-        key: C.key,
-        idx: q + 1
-      }, g(C)];
-      C = b[0];
-      b = b[1];
-
-      try {
-        f.pushState(C, "", b);
-      } catch (G) {
-        h.location.assign(b);
-      }
-
-      v(k);
-    }
-  }
-
-  function u(a, d) {
-    function c() {
-      u(a, d);
-    }
-
-    var b = m.Replace,
-        k = t(a, d);
-    e.length && (e.call({
-      action: b,
-      location: k,
-      retry: c
-    }), 1) || (k = [{
-      usr: k.state,
-      key: k.key,
-      idx: q
-    }, g(k)], f.replaceState(k[0], "", k[1]), v(b));
-  }
-
-  function r(a) {
-    f.go(a);
-  }
-
-  void 0 === a && (a = {});
-  a = a.window;
-  var h = void 0 === a ? document.defaultView : a,
-      f = h.history,
-      p = null;
-  h.addEventListener("popstate", function () {
-    if (p) e.call(p), p = null;else {
-      var a = m.Pop,
-          d = b(),
-          c = d[0];
-      d = d[1];
-      if (e.length) {
-        if (null != c) {
-          var f = q - c;
-          f && (p = {
-            action: a,
-            location: d,
-            retry: function () {
-              r(-1 * f);
-            }
-          }, r(f));
-        } else "production" !== "development" ? z(!1, "You are trying to block a POP navigation to a location that was not created by the history library. The block will fail silently in production, but in general you should do all navigation with the history library (instead of using window.history.pushState directly) to avoid this situation.") : void 0;
-      } else v(a);
-    }
-  });
-  var n = m.Pop;
-  a = b();
-  var q = a[0],
-      l = a[1],
-      c = B(),
-      e = B();
-  null == q && (q = 0, f.replaceState((0, _extends2.default)({}, f.state, {
-    idx: q
-  }), ""));
-  return {
-    get action() {
-      return n;
-    },
-
-    get location() {
-      return l;
-    },
-
-    createHref: g,
-    push: w,
-    replace: u,
-    go: r,
-    back: function () {
-      r(-1);
-    },
-    forward: function () {
-      r(1);
-    },
-    listen: function (a) {
-      return c.push(a);
-    },
-    block: function (a) {
-      var d = e.push(a);
-      1 === e.length && h.addEventListener("beforeunload", A);
-      return function () {
-        d();
-        e.length || h.removeEventListener("beforeunload", A);
-      };
-    }
-  };
-}
-
-;
-
-function createHashHistory(a) {
-  function b() {
-    var a = F(f.location.hash.substr(1)),
-        c = a.pathname,
-        b = a.search;
-    a = a.hash;
-    var e = p.state || {};
-    return [e.idx, y({
-      pathname: void 0 === c ? "/" : c,
-      search: void 0 === b ? "" : b,
-      hash: void 0 === a ? "" : a,
-      state: e.usr || null,
-      key: e.key || "default"
-    })];
-  }
-
-  function g() {
-    if (n) k.call(n), n = null;else {
-      var a = m.Pop,
-          c = b(),
-          e = c[0];
-      c = c[1];
-      if (k.length) {
-        if (null != e) {
-          var f = l - e;
-          f && (n = {
-            action: a,
-            location: c,
-            retry: function () {
-              h(-1 * f);
-            }
-          }, h(f));
-        } else "production" !== "development" ? z(!1, "You are trying to block a POP navigation to a location that was not created by the history library. The block will fail silently in production, but in general you should do all navigation with the history library (instead of using window.history.pushState directly) to avoid this situation.") : void 0;
-      } else w(a);
-    }
-  }
-
-  function t(a) {
-    var d = document.querySelector("base"),
-        c = "";
-    d && d.getAttribute("href") && (d = f.location.href, c = d.indexOf("#"), c = -1 === c ? d : d.slice(0, c));
-    return c + "#" + ("string" === typeof a ? a : E(a));
-  }
-
-  function v(a, b) {
-    void 0 === b && (b = null);
-    return y((0, _extends2.default)({}, c, {}, "string" === typeof a ? F(a) : a, {
-      state: b,
-      key: D()
-    }));
-  }
-
-  function w(a) {
-    q = a;
-    a = b();
-    l = a[0];
-    c = a[1];
-    e.call({
-      action: q,
-      location: c
-    });
-  }
-
-  function u(a, c) {
-    function d() {
-      u(a, c);
-    }
-
-    var b = m.Push,
-        e = v(a, c);
-    "production" !== "development" ? z("/" === e.pathname.charAt(0), "Relative pathnames are not supported in hash history.push(" + JSON.stringify(a) + ")") : void 0;
-
-    if (!k.length || (k.call({
-      action: b,
-      location: e,
-      retry: d
-    }), !1)) {
-      var g = [{
-        usr: e.state,
-        key: e.key,
-        idx: l + 1
-      }, t(e)];
-      e = g[0];
-      g = g[1];
-
-      try {
-        p.pushState(e, "", g);
-      } catch (H) {
-        f.location.assign(g);
-      }
-
-      w(b);
-    }
-  }
-
-  function r(a, c) {
-    function d() {
-      r(a, c);
-    }
-
-    var e = m.Replace,
-        b = v(a, c);
-    "production" !== "development" ? z("/" === b.pathname.charAt(0), "Relative pathnames are not supported in hash history.replace(" + JSON.stringify(a) + ")") : void 0;
-    k.length && (k.call({
-      action: e,
-      location: b,
-      retry: d
-    }), 1) || (b = [{
-      usr: b.state,
-      key: b.key,
-      idx: l
-    }, t(b)], p.replaceState(b[0], "", b[1]), w(e));
-  }
-
-  function h(a) {
-    p.go(a);
-  }
-
-  void 0 === a && (a = {});
-  a = a.window;
-  var f = void 0 === a ? document.defaultView : a,
-      p = f.history,
-      n = null;
-  f.addEventListener("popstate", g);
-  f.addEventListener("hashchange", function () {
-    var a = b()[1];
-    E(a) !== E(c) && g();
-  });
-  var q = m.Pop;
-  a = b();
-  var l = a[0],
-      c = a[1],
-      e = B(),
-      k = B();
-  null == l && (l = 0, p.replaceState((0, _extends2.default)({}, p.state, {
-    idx: l
-  }), ""));
-  return {
-    get action() {
-      return q;
-    },
-
-    get location() {
-      return c;
-    },
-
-    createHref: t,
-    push: u,
-    replace: r,
-    go: h,
-    back: function () {
-      h(-1);
-    },
-    forward: function () {
-      h(1);
-    },
-    listen: function (a) {
-      return e.push(a);
-    },
-    block: function (a) {
-      var c = k.push(a);
-      1 === k.length && f.addEventListener("beforeunload", A);
-      return function () {
-        c();
-        k.length || f.removeEventListener("beforeunload", A);
-      };
-    }
-  };
-}
-
-;
-
-function createMemoryHistory(a) {
-  function b(a, b) {
-    void 0 === b && (b = null);
-    return y((0, _extends2.default)({}, n, {}, "string" === typeof a ? F(a) : a, {
-      state: b,
-      key: D()
-    }));
-  }
-
-  function g(a, b, f) {
-    return !l.length || (l.call({
-      action: a,
-      location: b,
-      retry: f
-    }), !1);
-  }
-
-  function t(a, b) {
-    p = a;
-    n = b;
-    q.call({
-      action: p,
-      location: n
-    });
-  }
-
-  function v(a, e) {
-    var c = m.Push,
-        d = b(a, e);
-    "production" !== "development" ? z("/" === n.pathname.charAt(0), "Relative pathnames are not supported in memory history.push(" + JSON.stringify(a) + ")") : void 0;
-    g(c, d, function () {
-      v(a, e);
-    }) && (f += 1, h.splice(f, h.length, d), t(c, d));
-  }
-
-  function w(a, e) {
-    var c = m.Replace,
-        d = b(a, e);
-    "production" !== "development" ? z("/" === n.pathname.charAt(0), "Relative pathnames are not supported in memory history.replace(" + JSON.stringify(a) + ")") : void 0;
-    g(c, d, function () {
-      w(a, e);
-    }) && (h[f] = d, t(c, d));
-  }
-
-  function u(a) {
-    var b = Math.min(Math.max(f + a, 0), h.length - 1),
-        c = m.Pop,
-        d = h[b];
-    g(c, d, function () {
-      u(a);
-    }) && (f = b, t(c, d));
-  }
-
-  void 0 === a && (a = {});
-  var r = a;
-  a = r.initialEntries;
-  r = r.initialIndex;
-  var h = (void 0 === a ? ["/"] : a).map(function (a) {
-    var b = y((0, _extends2.default)({
-      pathname: "/",
-      search: "",
-      hash: "",
-      state: null,
-      key: D()
-    }, "string" === typeof a ? F(a) : a));
-    "production" !== "development" ? z("/" === b.pathname.charAt(0), "Relative pathnames are not supported in createMemoryHistory({ initialEntries }) (invalid entry: " + JSON.stringify(a) + ")") : void 0;
-    return b;
-  }),
-      f = Math.min(Math.max(null == r ? h.length - 1 : r, 0), h.length - 1),
-      p = m.Pop,
-      n = h[f],
-      q = B(),
-      l = B();
-  return {
-    get index() {
-      return f;
-    },
-
-    get action() {
-      return p;
-    },
-
-    get location() {
-      return n;
-    },
-
-    createHref: function (a) {
-      return "string" === typeof a ? a : E(a);
-    },
-    push: v,
-    replace: w,
-    go: u,
-    back: function () {
-      u(-1);
-    },
-    forward: function () {
-      u(1);
-    },
-    listen: function (a) {
-      return q.push(a);
-    },
-    block: function (a) {
-      return l.push(a);
-    }
-  };
-}
-
-;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js"}],"../node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
+},{"react-router":"../node_modules/react-router/esm/react-router.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","react":"../node_modules/react/index.js","history":"../node_modules/history/esm/history.js","prop-types":"../node_modules/prop-types/index.js","tiny-warning":"../node_modules/tiny-warning/dist/tiny-warning.esm.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","tiny-invariant":"../node_modules/tiny-invariant/dist/tiny-invariant.esm.js"}],"../node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39591,7 +38115,7 @@ function configureStore() {
   )));
   return store;
 }
-},{"history":"../node_modules/history/index.js","redux":"../node_modules/redux/es/redux.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","redux-thunk":"../node_modules/redux-thunk/es/index.js","./reducers":"reducers.js"}],"components/PrivateRoute.js":[function(require,module,exports) {
+},{"history":"../node_modules/history/esm/history.js","redux":"../node_modules/redux/es/redux.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","redux-thunk":"../node_modules/redux-thunk/es/index.js","./reducers":"reducers.js"}],"components/PrivateRoute.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47076,7 +45600,343 @@ NavDropdown.Divider = _Dropdown.default.Divider;
 NavDropdown.Header = _Dropdown.default.Header;
 var _default = NavDropdown;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./Dropdown":"../node_modules/react-bootstrap/esm/Dropdown.js","./NavItem":"../node_modules/react-bootstrap/esm/NavItem.js","./NavLink":"../node_modules/react-bootstrap/esm/NavLink.js"}],"components/Navbar.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./Dropdown":"../node_modules/react-bootstrap/esm/Dropdown.js","./NavItem":"../node_modules/react-bootstrap/esm/NavItem.js","./NavLink":"../node_modules/react-bootstrap/esm/NavLink.js"}],"services/eventService.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.eventService = void 0;
+var apiUrl = "http://localhost:3000";
+var eventService = {
+  allEvent: allEvent,
+  createEvent: createEvent,
+  deleteEvent: deleteEvent
+};
+exports.eventService = eventService;
+
+function allEvent() {
+  var url = "".concat(apiUrl, "/events");
+  var options = {
+    method: "GET"
+  };
+  return fetch(url, options).then(function (resp) {
+    return resp.json();
+  }).then(function (json) {
+    return json;
+  }).catch(function (err) {
+    console.log("Error in allEvent eventService ===============");
+    console.log(err);
+  });
+}
+
+function createEvent(event) {
+  var id = event.id,
+      title = event.title,
+      description = event.description,
+      capacity = event.capacity,
+      region = event.region,
+      imgUrl = event.imgUrl;
+  var url = "".concat(apiUrl, "/events");
+  var options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: id,
+      title: title,
+      description: description,
+      capacity: capacity,
+      region: region,
+      imgUrl: imgUrl
+    })
+  };
+  return fetch(url, options).then(function (resp) {
+    return resp.json();
+  }).then(function (json) {
+    return json;
+  }).catch(function (err) {
+    console.log("Error in createEvent eventService ================");
+    console.log(err);
+  });
+}
+
+function deleteEvent(eventId) {
+  var url = "".concat(apiUrl, "/events/").concat(eventId);
+  var options = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  return fetch(url, options).then(function (resp) {
+    return resp.json();
+  }).then(function (json) {
+    return json;
+  }).catch(function (err) {
+    console.log("Error in deleteEvent eventService ================");
+    console.log(err);
+  });
+}
+},{}],"services/userService.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.userService = void 0;
+var apiUrl = "http://localhost:3000";
+var userService = {
+  login: login,
+  logout: logout
+};
+exports.userService = userService;
+
+function login(email, password) {
+  var url = "".concat(apiUrl, "/login");
+  console.log("Request to : ", url);
+  var options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
+  };
+  return fetch(url, options).then(function (resp) {
+    return resp.json();
+  }).then(function (json) {
+    if (json) localStorage.setItem("user", JSON.stringify(json));
+    console.log("response from server ", json);
+    return json;
+  }).catch(function (err) {
+    console.log("Error in login userService ==============");
+    console.log(err);
+  });
+}
+
+function signup(data) {
+  var first_name = data.first_name,
+      last_name = data.last_name,
+      email = data.email,
+      phone = data.phone,
+      password = data.password,
+      gender = data.gender; // some checks can be added here for the data before requesting the server
+
+  var url = "".concat(apiUrl, "/register");
+  var options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      first_name: first_name,
+      last_name: last_name,
+      phone: phone,
+      gender: gender,
+      email: email,
+      password: password
+    })
+  };
+  console.log(options);
+  return fetch(url, options).then(function (resp) {
+    return resp.json();
+  }).then(function (json) {
+    if (json.status) localStorage.setItem("user", JSON.stringify(json.data));
+    console.log("response from server ", json);
+    return json;
+  }).catch(function (err) {
+    console.log("Error in login userService ==============");
+    console.log(err);
+  });
+}
+
+function logout() {
+  localStorage.removeItem("user");
+}
+},{}],"services/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _eventService = require("./eventService");
+
+Object.keys(_eventService).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _eventService[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _eventService[key];
+    }
+  });
+});
+
+var _userService = require("./userService");
+
+Object.keys(_userService).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _userService[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _userService[key];
+    }
+  });
+});
+},{"./eventService":"services/eventService.js","./userService":"services/userService.js"}],"actions/alertActions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.alertActions = void 0;
+
+var _reactReduxToastr = require("react-redux-toastr");
+
+var alertActions = {
+  success: success,
+  error: error
+};
+exports.alertActions = alertActions;
+
+function success(message) {
+  return function (dispatch) {
+    _reactReduxToastr.toastr.info("Success", message);
+  };
+}
+
+function error(message) {
+  return function (dispatch) {
+    _reactReduxToastr.toastr.error("Error", message);
+  };
+}
+},{"react-redux-toastr":"../node_modules/react-redux-toastr/lib/index.js"}],"actions/userActions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.userActions = void 0;
+
+var _services = require("../services");
+
+var _alertActions = require("./alertActions");
+
+var _constants = require("../constants");
+
+var _configureStore = require("../configureStore");
+
+var userActions = {
+  login: login,
+  logout: logout
+};
+exports.userActions = userActions;
+
+function login(data) {
+  var email = data.email,
+      password = data.password;
+  var location = _configureStore.history.location;
+
+  var _ref = location.state || {
+    from: {
+      pathname: "/"
+    }
+  },
+      from = _ref.from;
+
+  return function (dispatch) {
+    dispatch(request({
+      email: email
+    }));
+
+    _services.userService.login(email, password).then(function (resp) {
+      if (resp) {
+        dispatch(success(resp));
+
+        _configureStore.history.replace(from);
+
+        dispatch(_alertActions.alertActions.success("Logged In Succesfully"));
+      } else {
+        dispatch(failure(resp));
+        dispatch(_alertActions.alertActions.error("Server Error"));
+      }
+    }).catch(function (err) {
+      dispatch(_alertActions.alertActions.error(err.message));
+    });
+  };
+
+  function request(user) {
+    return {
+      type: _constants.userConstants.LOGIN_REQUEST,
+      user: user
+    };
+  }
+
+  function success(user) {
+    return {
+      type: _constants.userConstants.LOGIN_SUCCESS,
+      user: user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: _constants.userConstants.LOGIN_FAILURE,
+      error: error
+    };
+  }
+} // function signup(data){
+//   return (dispatch) => {
+//     dispatch(request(data));
+//     userService.signup(data)
+//       .then((resp) => {
+//         if(resp.status) {
+//           dispatch(success(resp.data));
+//           history.push("/");
+//           dispatch(alertActions.success(resp.msg));
+//         }
+//         else {
+//           dispatch(failure(resp.msg));
+//           dispatch(alertActions.error(resp.msg));
+//         }
+//       })
+//       .catch(err => {
+//         dispatch(alertActions.error(err.message));
+//       });
+//   };
+//   function request(user) {
+//     return {type: userConstants.SIGNUP_REQUEST, user};
+//   }
+//   function success(user) {
+//     return {type: userConstants.SIGNUP_SUCCESS, user};
+//   }
+//   function failure(error) {
+//     return {type: userConstants.SIGNUP_FAILURE, error};
+//   }
+// }
+
+
+function logout() {
+  return function (dispatch) {
+    _services.userService.logout();
+
+    dispatch(success());
+    dispatch(_alertActions.alertActions.success("Logged out Succesfully"));
+  };
+
+  function success() {
+    return {
+      type: _constants.userConstants.LOGOUT
+    };
+  }
+}
+},{"../services":"services/index.js","./alertActions":"actions/alertActions.js","../constants":"constants/index.js","../configureStore":"configureStore.js"}],"components/Navbar.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47086,21 +45946,25 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
+var _reactRedux = require("react-redux");
+
 var _Navbar = _interopRequireDefault(require("react-bootstrap/Navbar"));
 
 var _Nav = _interopRequireDefault(require("react-bootstrap/Nav"));
 
 var _NavDropdown = _interopRequireDefault(require("react-bootstrap/NavDropdown"));
 
+var _userActions = require("../actions/userActions");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var AppNavbar = function AppNavbar() {
+var AppNavbar = function AppNavbar(props) {
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Navbar.default, {
     bg: "light",
     expand: "lg"
   }, /*#__PURE__*/_react.default.createElement(_Navbar.default.Brand, {
     href: "/"
-  }, "Event Finder"), /*#__PURE__*/_react.default.createElement(_Navbar.default.Toggle, {
+  }, "Kitchen Story"), /*#__PURE__*/_react.default.createElement(_Navbar.default.Toggle, {
     "aria-controls": "basic-navbar-nav"
   }), /*#__PURE__*/_react.default.createElement(_Navbar.default.Collapse, {
     id: "basic-navbar-nav"
@@ -47109,20 +45973,37 @@ var AppNavbar = function AppNavbar() {
   }, /*#__PURE__*/_react.default.createElement(_Nav.default.Link, {
     href: "/"
   }, "Home"), /*#__PURE__*/_react.default.createElement(_NavDropdown.default, {
-    title: "Manage Events",
+    title: "Manage Food Items",
     id: "basic-nav-dropdown"
   }, /*#__PURE__*/_react.default.createElement(_NavDropdown.default.Item, {
     href: "/manage/create"
-  }, "Create Event"), /*#__PURE__*/_react.default.createElement(_NavDropdown.default.Item, {
+  }, "Add Food Item"), /*#__PURE__*/_react.default.createElement(_NavDropdown.default.Item, {
     href: "/manage/delete"
-  }, "Delete Event")), /*#__PURE__*/_react.default.createElement(_Nav.default.Link, {
+  }, "Delete Food Item")), /*#__PURE__*/_react.default.createElement(_Nav.default.Link, {
     href: "".concat("http://localhost:3000")
-  }, "API")))));
+  }, "API"), props.currentUser.user ? /*#__PURE__*/_react.default.createElement(_Nav.default.Link, {
+    onClick: function onClick() {
+      return props.logout();
+    }
+  }, "Logout") : /*#__PURE__*/_react.default.createElement(_Nav.default.Link, {
+    href: "/login"
+  }, "Login")))));
 };
 
-var _default = AppNavbar;
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    currentUser: state.authentication
+  };
+};
+
+var actionCreators = {
+  logout: _userActions.userActions.logout
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, actionCreators)(AppNavbar);
+
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-bootstrap/Navbar":"../node_modules/react-bootstrap/esm/Navbar.js","react-bootstrap/Nav":"../node_modules/react-bootstrap/esm/Nav.js","react-bootstrap/NavDropdown":"../node_modules/react-bootstrap/esm/NavDropdown.js"}],"../node_modules/react-bootstrap/esm/Feedback.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-bootstrap/Navbar":"../node_modules/react-bootstrap/esm/Navbar.js","react-bootstrap/Nav":"../node_modules/react-bootstrap/esm/Nav.js","react-bootstrap/NavDropdown":"../node_modules/react-bootstrap/esm/NavDropdown.js","../actions/userActions":"actions/userActions.js"}],"../node_modules/react-bootstrap/esm/Feedback.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48164,7 +47045,7 @@ var SearchBar = function SearchBar(props) {
   }, /*#__PURE__*/_react.default.createElement(_FormControl.default, {
     type: "text",
     value: props.searchKeyword,
-    placeholder: "Search by Region eg: delhi",
+    placeholder: "Search by Availaibility Zone/Region eg: Delhi",
     onChange: handleChange
   }))));
 };
@@ -48375,7 +47256,7 @@ var Event = function Event(props) {
   }, /*#__PURE__*/_react.default.createElement(_Card.default.Img, {
     variant: "top",
     src: props.imgUrl
-  }), /*#__PURE__*/_react.default.createElement(_Card.default.Body, null, /*#__PURE__*/_react.default.createElement(_Card.default.Title, null, props.title), /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, props.description), /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, props.capacity), /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, props.region), props.deleteButton && /*#__PURE__*/_react.default.createElement(_Button.default, {
+  }), /*#__PURE__*/_react.default.createElement(_Card.default.Body, null, /*#__PURE__*/_react.default.createElement(_Card.default.Title, null, props.title), /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, props.description), /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, "Qty.: ", props.capacity), /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, props.region), props.deleteButton && /*#__PURE__*/_react.default.createElement(_Button.default, {
     variant: "danger",
     onClick: handleDelete
   }, "Delete"))));
@@ -62636,113 +61517,7 @@ function addMethod(schemaType, name, fn) {
   if (typeof fn !== 'function') throw new TypeError('Method function must be provided');
   schemaType.prototype[name] = fn;
 }
-},{"./mixed":"../node_modules/yup/es/mixed.js","./boolean":"../node_modules/yup/es/boolean.js","./string":"../node_modules/yup/es/string.js","./number":"../node_modules/yup/es/number.js","./date":"../node_modules/yup/es/date.js","./object":"../node_modules/yup/es/object.js","./array":"../node_modules/yup/es/array.js","./Reference":"../node_modules/yup/es/Reference.js","./Lazy":"../node_modules/yup/es/Lazy.js","./ValidationError":"../node_modules/yup/es/ValidationError.js","./util/reach":"../node_modules/yup/es/util/reach.js","./util/isSchema":"../node_modules/yup/es/util/isSchema.js","./setLocale":"../node_modules/yup/es/setLocale.js"}],"services/eventService.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.eventService = void 0;
-var apiUrl = "http://localhost:3000";
-var eventService = {
-  allEvent: allEvent,
-  createEvent: createEvent,
-  deleteEvent: deleteEvent
-};
-exports.eventService = eventService;
-
-function allEvent() {
-  var url = "".concat(apiUrl, "/events");
-  var options = {
-    method: "GET"
-  };
-  return fetch(url, options).then(function (resp) {
-    return resp.json();
-  }).then(function (json) {
-    return json;
-  }).catch(function (err) {
-    console.log("Error in allEvent eventService ===============");
-    console.log(err);
-  });
-}
-
-function createEvent(event) {
-  var id = event.id,
-      title = event.title,
-      description = event.description,
-      capacity = event.capacity,
-      region = event.region,
-      imgUrl = event.imgUrl;
-  var url = "".concat(apiUrl, "/events");
-  var options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      id: id,
-      title: title,
-      description: description,
-      capacity: capacity,
-      region: region,
-      imgUrl: imgUrl
-    })
-  };
-  return fetch(url, options).then(function (resp) {
-    return resp.json();
-  }).then(function (json) {
-    return json;
-  }).catch(function (err) {
-    console.log("Error in createEvent eventService ================");
-    console.log(err);
-  });
-}
-
-function deleteEvent(eventId) {
-  var url = "".concat(apiUrl, "/events/").concat(eventId);
-  var options = {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-  return fetch(url, options).then(function (resp) {
-    return resp.json();
-  }).then(function (json) {
-    return json;
-  }).catch(function (err) {
-    console.log("Error in deleteEvent eventService ================");
-    console.log(err);
-  });
-}
-},{}],"actions/alertActions.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.alertActions = void 0;
-
-var _reactReduxToastr = require("react-redux-toastr");
-
-var alertActions = {
-  success: success,
-  error: error
-};
-exports.alertActions = alertActions;
-
-function success(message) {
-  return function (dispatch) {
-    _reactReduxToastr.toastr.info("Success", message);
-  };
-}
-
-function error(message) {
-  return function (dispatch) {
-    _reactReduxToastr.toastr.error("Error", message);
-  };
-}
-},{"react-redux-toastr":"../node_modules/react-redux-toastr/lib/index.js"}],"actions/eventActions.js":[function(require,module,exports) {
+},{"./mixed":"../node_modules/yup/es/mixed.js","./boolean":"../node_modules/yup/es/boolean.js","./string":"../node_modules/yup/es/string.js","./number":"../node_modules/yup/es/number.js","./date":"../node_modules/yup/es/date.js","./object":"../node_modules/yup/es/object.js","./array":"../node_modules/yup/es/array.js","./Reference":"../node_modules/yup/es/Reference.js","./Lazy":"../node_modules/yup/es/Lazy.js","./ValidationError":"../node_modules/yup/es/ValidationError.js","./util/reach":"../node_modules/yup/es/util/reach.js","./util/isSchema":"../node_modules/yup/es/util/isSchema.js","./setLocale":"../node_modules/yup/es/setLocale.js"}],"actions/eventActions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -62772,7 +61547,7 @@ function allEvents() {
     _eventService.eventService.allEvent().then(function (resp) {
       if (resp) {
         dispatch(success(resp));
-        dispatch(_alertActions.alertActions.success("All Events Fetched"));
+        dispatch(_alertActions.alertActions.success("All Food Items Fetched"));
       } else {
         dispatch(failure(resp));
       }
@@ -62822,7 +61597,7 @@ function createEvent(data) {
     }).then(function (resp) {
       if (resp) {
         dispatch(success(resp));
-        dispatch(_alertActions.alertActions.success("Succesfully Added the Event"));
+        dispatch(_alertActions.alertActions.success("Succesfully Added the Food Item"));
       } else {
         dispatch(failure(resp));
       }
@@ -62859,7 +61634,7 @@ function deleteEvent(id) {
     _eventService.eventService.deleteEvent(id).then(function (resp) {
       if (resp) {
         dispatch(success(resp));
-        dispatch(_alertActions.alertActions.error("Deleted event with id: ", id));
+        dispatch(_alertActions.alertActions.error("Deleted food item with id: ", id));
         location.reload();
       } else {
         dispatch(failure(resp));
@@ -62964,7 +61739,7 @@ var EventForm = function EventForm(props) {
       as: _Col.default,
       md: "8",
       controlId: "validationFormik01"
-    }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Event Title"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+    }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Food Item Name"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
       type: "text",
       name: "title",
       onChange: handleChange,
@@ -62984,7 +61759,7 @@ var EventForm = function EventForm(props) {
       as: _Col.default,
       md: "8",
       controlId: "validationFormikCapacity"
-    }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Capacity"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+    }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Qty. Availaible"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
       type: "number",
       placeholder: "1000",
       name: "capacity",
@@ -62997,7 +61772,7 @@ var EventForm = function EventForm(props) {
       as: _Col.default,
       md: "8",
       controlId: "validationFormik03"
-    }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Region"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+    }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Availaibility Zone/region"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
       type: "text",
       placeholder: "City",
       name: "region",
@@ -63098,237 +61873,7 @@ var actionCreators = {
 var _default = (0, _reactRedux.connect)(mapStateToProps, actionCreators)(DeleteEvent);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","./Event":"components/Event.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","../actions/eventActions":"actions/eventActions.js","./Navbar":"components/Navbar.js","./SearchBar":"components/SearchBar.js"}],"services/userService.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.userService = void 0;
-var apiUrl = "http://localhost:3000";
-var userService = {
-  login: login,
-  logout: logout
-};
-exports.userService = userService;
-
-function login(email, password) {
-  var url = "".concat(apiUrl, "/login");
-  console.log("Request to : ", url);
-  var options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password
-    })
-  };
-  return fetch(url, options).then(function (resp) {
-    return resp.json();
-  }).then(function (json) {
-    if (json) localStorage.setItem("user", JSON.stringify(json));
-    console.log("response from server ", json);
-    return json;
-  }).catch(function (err) {
-    console.log("Error in login userService ==============");
-    console.log(err);
-  });
-}
-
-function signup(data) {
-  var first_name = data.first_name,
-      last_name = data.last_name,
-      email = data.email,
-      phone = data.phone,
-      password = data.password,
-      gender = data.gender; // some checks can be added here for the data before requesting the server
-
-  var url = "".concat(apiUrl, "/register");
-  var options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      first_name: first_name,
-      last_name: last_name,
-      phone: phone,
-      gender: gender,
-      email: email,
-      password: password
-    })
-  };
-  console.log(options);
-  return fetch(url, options).then(function (resp) {
-    return resp.json();
-  }).then(function (json) {
-    if (json.status) localStorage.setItem("user", JSON.stringify(json.data));
-    console.log("response from server ", json);
-    return json;
-  }).catch(function (err) {
-    console.log("Error in login userService ==============");
-    console.log(err);
-  });
-}
-
-function logout() {
-  localStorage.removeItem("user");
-}
-},{}],"services/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _eventService = require("./eventService");
-
-Object.keys(_eventService).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (key in exports && exports[key] === _eventService[key]) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _eventService[key];
-    }
-  });
-});
-
-var _userService = require("./userService");
-
-Object.keys(_userService).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (key in exports && exports[key] === _userService[key]) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _userService[key];
-    }
-  });
-});
-},{"./eventService":"services/eventService.js","./userService":"services/userService.js"}],"actions/userActions.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.userActions = void 0;
-
-var _services = require("../services");
-
-var _alertActions = require("./alertActions");
-
-var _constants = require("../constants");
-
-var _configureStore = require("../configureStore");
-
-var userActions = {
-  login: login,
-  logout: logout
-};
-exports.userActions = userActions;
-
-function login(data) {
-  var email = data.email,
-      password = data.password;
-  var location = _configureStore.history.location;
-
-  var _ref = location.state || {
-    from: {
-      pathname: "/"
-    }
-  },
-      from = _ref.from;
-
-  return function (dispatch) {
-    dispatch(request({
-      email: email
-    }));
-
-    _services.userService.login(email, password).then(function (resp) {
-      if (resp.status) {
-        dispatch(success(resp.data));
-
-        _configureStore.history.replace(from);
-
-        dispatch(_alertActions.alertActions.success(resp.msg));
-      } else {
-        dispatch(failure(resp.msg));
-        dispatch(_alertActions.alertActions.error(resp.msg));
-      }
-    }).catch(function (err) {
-      dispatch(_alertActions.alertActions.error(err.message));
-    });
-  };
-
-  function request(user) {
-    return {
-      type: _constants.userConstants.LOGIN_REQUEST,
-      user: user
-    };
-  }
-
-  function success(user) {
-    return {
-      type: _constants.userConstants.LOGIN_SUCCESS,
-      user: user
-    };
-  }
-
-  function failure(error) {
-    return {
-      type: _constants.userConstants.LOGIN_FAILURE,
-      error: error
-    };
-  }
-} // function signup(data){
-//   return (dispatch) => {
-//     dispatch(request(data));
-//     userService.signup(data)
-//       .then((resp) => {
-//         if(resp.status) {
-//           dispatch(success(resp.data));
-//           history.push("/");
-//           dispatch(alertActions.success(resp.msg));
-//         }
-//         else {
-//           dispatch(failure(resp.msg));
-//           dispatch(alertActions.error(resp.msg));
-//         }
-//       })
-//       .catch(err => {
-//         dispatch(alertActions.error(err.message));
-//       });
-//   };
-//   function request(user) {
-//     return {type: userConstants.SIGNUP_REQUEST, user};
-//   }
-//   function success(user) {
-//     return {type: userConstants.SIGNUP_SUCCESS, user};
-//   }
-//   function failure(error) {
-//     return {type: userConstants.SIGNUP_FAILURE, error};
-//   }
-// }
-
-
-function logout() {
-  return function (dispatch) {
-    _services.userService.logout();
-
-    dispatch(success());
-    dispatch(_alertActions.alertActions.success("Logged out Succesfully"));
-  };
-
-  function success() {
-    return {
-      type: _constants.userConstants.LOGOUT
-    };
-  }
-}
-},{"../services":"services/index.js","./alertActions":"actions/alertActions.js","../constants":"constants/index.js","../configureStore":"configureStore.js"}],"components/AdminLogin.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","./Event":"components/Event.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","../actions/eventActions":"actions/eventActions.js","./Navbar":"components/Navbar.js","./SearchBar":"components/SearchBar.js"}],"components/AdminLogin.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -63461,7 +62006,6 @@ var Routes = function Routes(props) {
     exact: true,
     path: "/"
   }, /*#__PURE__*/_react.default.createElement(_Landing.default, null)), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
-    exact: true,
     path: "/login"
   }, /*#__PURE__*/_react.default.createElement(_AdminLogin.default, null)), /*#__PURE__*/_react.default.createElement(_PrivateRoute.default, {
     path: "/manage/create",
@@ -63661,7 +62205,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50637" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58805" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

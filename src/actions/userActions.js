@@ -18,13 +18,13 @@ function login(data) {
     userService
       .login(email, password)
       .then((resp) => {
-        if (resp.status) {
-          dispatch(success(resp.data));
+        if (resp) {
+          dispatch(success(resp));
           history.replace(from);
-          dispatch(alertActions.success(resp.msg));
+          dispatch(alertActions.success("Logged In Succesfully"));
         } else {
-          dispatch(failure(resp.msg));
-          dispatch(alertActions.error(resp.msg));
+          dispatch(failure(resp));
+          dispatch(alertActions.error("Server Error"));
         }
       })
       .catch((err) => {

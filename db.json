@@ -8,52 +8,36 @@
   ],
   "events": [
     {
-      "id": 1603032592103,
-      "title": "Blitzkrieg",
-      "description": "Some Description content",
-      "capacity": 3000,
+      "id": 1604156565097,
+      "title": "Arab Dates",
+      "description": "Authentic Dates from Saudi....",
+      "capacity": 100,
       "region": "Delhi",
-      "imgUrl": "https://picsum.photos/id/873/200/200"
+      "imgUrl": "https://picsum.photos/id/231/200/200"
     },
     {
-      "id": 1603033004376,
-      "title": "Kaleidoscope",
+      "id": 1604156685644,
+      "title": "Food Item 1",
       "description": "Some Description content",
-      "capacity": 4000,
-      "region": "Delhi",
-      "imgUrl": "https://picsum.photos/id/401/200/200"
-    },
-    {
-      "id": 1603033320682,
-      "title": "title",
-      "description": "Some Description content",
-      "capacity": 12121,
-      "region": "kolkata",
+      "capacity": 1000,
+      "region": "New Delhi, Mumbai",
       "imgUrl": "https://picsum.photos/id/435/200/200"
     },
     {
-      "id": 1603033329168,
-      "title": "title",
+      "id": 1604156739591,
+      "title": "Food Item 2",
       "description": "Some Description content",
-      "capacity": 12124,
-      "region": "mumbai",
-      "imgUrl": "https://picsum.photos/id/435/200/200"
+      "capacity": 7649,
+      "region": "Delhi, Kolkata, Mumbai",
+      "imgUrl": "https://picsum.photos/id/541/200/200"
     },
     {
-      "id": 1603033598763,
-      "title": "Dhoom",
+      "id": 1604156765021,
+      "title": "Food Item 3",
       "description": "Some Description content",
-      "capacity": 4000,
-      "region": "Delhi-NCR",
-      "imgUrl": "https://picsum.photos/id/645/200/200"
-    },
-    {
-      "id": 1603033623612,
-      "title": "Spectrum",
-      "description": "Some Description content",
-      "capacity": 5000,
+      "capacity": 700,
       "region": "Mumbai",
-      "imgUrl": "https://picsum.photos/id/297/200/200"
+      "imgUrl": "https://picsum.photos/id/259/200/200"
     }
   ]
 }

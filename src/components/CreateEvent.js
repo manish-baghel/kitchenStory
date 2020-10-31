@@ -45,7 +45,7 @@ const EventForm = (props) => {
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Row>
             <Form.Group as={Col} md="8" controlId="validationFormik01">
-              <Form.Label>Event Title</Form.Label>
+              <Form.Label>Food Item Name</Form.Label>
               <Form.Control
                 type="text"
                 name="title"
@@ -68,7 +68,7 @@ const EventForm = (props) => {
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col} md="8" controlId="validationFormikCapacity">
-              <Form.Label>Capacity</Form.Label>
+              <Form.Label>Qty. Availaible</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="1000"
@@ -82,7 +82,7 @@ const EventForm = (props) => {
           </Form.Row>
           <Form.Row>
             <Form.Group as={Col} md="8" controlId="validationFormik03">
-              <Form.Label>Region</Form.Label>
+              <Form.Label>Availaibility Zone/region</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="City"

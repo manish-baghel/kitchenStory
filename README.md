@@ -1,4 +1,4 @@
-# Event Finder - Phase 4 Assessment
+# Kitchen Story  - Phase 4 Assessment
 
 ## Technologies Used
 | ReactJS | 16.14.0 |
@@ -12,43 +12,45 @@
 ## File Structure
 
 ```
-├── README.md
-├── db.json
-├── package.json
-├── src
-│   ├── actions
-│   │   ├── alertActions.js
-│   │   ├── eventActions.js
-│   │   ├── index.js
-│   │   └── searchActions.js
-│   ├── components
-│   │   ├── App.js
-│   │   ├── CreateEvent.js
-│   │   ├── DeleteEvent.js
-│   │   ├── Event.js
-│   │   ├── EventsCatalog.js
-│   │   ├── Landing.js
-│   │   ├── Navbar.js
-│   │   ├── Routes.js
-│   │   └── SearchBar.js
-│   ├── configureStore.js
-│   ├── constants
-│   │   ├── alertConstants.js
-│   │   ├── eventConstants.js
-│   │   └── index.js
-│   ├── index.html
+src/
+├── actions
+│   ├── alertActions.js
+│   ├── eventActions.js
 │   ├── index.js
-│   ├── reducers
-│   │   ├── alertReducer.js
-│   │   ├── eventReducer.js
-│   │   └── searchReducer.js
-│   ├── reducers.js
-│   └── services
-│       ├── eventService.js
-│       └── index.js
-├── yarn-error.log
-└── yarn.lock
+│   ├── searchActions.js
+│   └── userActions.js
+├── components
+│   ├── AdminLogin.js
+│   ├── App.js
+│   ├── CreateEvent.js
+│   ├── DeleteEvent.js
+│   ├── Event.js
+│   ├── EventsCatalog.js
+│   ├── Landing.js
+│   ├── Navbar.js
+│   ├── PrivateRoute.js
+│   ├── Routes.js
+│   └── SearchBar.js
+├── configureStore.js
+├── constants
+│   ├── alertConstants.js
+│   ├── eventConstants.js
+│   ├── index.js
+│   └── userConstants.js
+├── index.html
+├── index.js
+├── reducers
+│   ├── adminAuthReducer.js
+│   ├── alertReducer.js
+│   ├── eventReducer.js
+│   └── searchReducer.js
+├── reducers.js
+└── services
+    ├── eventService.js
+    ├── index.js
+    └── userService.js
 ```
+
 
 ## Project Structure
 

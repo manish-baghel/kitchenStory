@@ -18,7 +18,7 @@ function allEvents() {
       .then((resp) => {
         if (resp) {
           dispatch(success(resp));
-          dispatch(alertActions.success("All Events Fetched"));
+          dispatch(alertActions.success("All Food Items Fetched"));
         } else {
           dispatch(failure(resp));
         }
@@ -50,7 +50,7 @@ function createEvent(data) {
       .then((resp) => {
         if (resp) {
           dispatch(success(resp));
-          dispatch(alertActions.success("Succesfully Added the Event"));
+          dispatch(alertActions.success("Succesfully Added the Food Item"));
         } else {
           dispatch(failure(resp));
         }
@@ -80,7 +80,7 @@ function deleteEvent(id) {
       .then((resp) => {
         if (resp) {
           dispatch(success(resp));
-          dispatch(alertActions.error("Deleted event with id: ",id))
+          dispatch(alertActions.error("Deleted food item with id: ",id))
           location.reload();
         } else {
           dispatch(failure(resp));

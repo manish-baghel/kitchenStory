@@ -19,7 +19,7 @@ const SearchBar = (props) => {
           <FormControl
             type="text"
             value={props.searchKeyword}
-            placeholder="Search by Region eg: delhi"
+            placeholder="Search by Availaibility Zone/Region eg: Delhi"
             onChange={handleChange}></FormControl>
         </Form>
       </Container>

@@ -16,7 +16,7 @@ const Routes = (props) => {
         <Route exact path="/">
           <Landing />
         </Route>
-        <Route exact path="/login">
+        <Route path="/login">
           <AdminLogin />
         </Route>
         <PrivateRoute path="/manage/create" currentUser={props.currentUser}>
