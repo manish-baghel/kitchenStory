@@ -1,0 +1,59 @@
+{
+  "users": [
+    {
+      "email": "p@q.com",
+      "password": "$2a$10$Wzekrza.mGPKK8Ih9kZmwOclFwZvVRPXup1mkhwGWwZck8wqNRew2",
+      "id": 1
+    }
+  ],
+  "events": [
+    {
+      "id": 1603032592103,
+      "title": "Blitzkrieg",
+      "description": "Some Description content",
+      "capacity": 3000,
+      "region": "Delhi",
+      "imgUrl": "https://picsum.photos/id/873/200/200"
+    },
+    {
+      "id": 1603033004376,
+      "title": "Kaleidoscope",
+      "description": "Some Description content",
+      "capacity": 4000,
+      "region": "Delhi",
+      "imgUrl": "https://picsum.photos/id/401/200/200"
+    },
+    {
+      "id": 1603033320682,
+      "title": "title",
+      "description": "Some Description content",
+      "capacity": 12121,
+      "region": "kolkata",
+      "imgUrl": "https://picsum.photos/id/435/200/200"
+    },
+    {
+      "id": 1603033329168,
+      "title": "title",
+      "description": "Some Description content",
+      "capacity": 12124,
+      "region": "mumbai",
+      "imgUrl": "https://picsum.photos/id/435/200/200"
+    },
+    {
+      "id": 1603033598763,
+      "title": "Dhoom",
+      "description": "Some Description content",
+      "capacity": 4000,
+      "region": "Delhi-NCR",
+      "imgUrl": "https://picsum.photos/id/645/200/200"
+    },
+    {
+      "id": 1603033623612,
+      "title": "Spectrum",
+      "description": "Some Description content",
+      "capacity": 5000,
+      "region": "Mumbai",
+      "imgUrl": "https://picsum.photos/id/297/200/200"
+    }
+  ]
+}
