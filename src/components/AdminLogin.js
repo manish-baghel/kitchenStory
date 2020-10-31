@@ -50,7 +50,7 @@ const LoginForm = (props) => {
             <Form.Group as={Col} md="8" controlId="validationFormik02">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="text"
+                type="password"
                 name="password"
                 value={values.description}
                 onChange={handleChange}

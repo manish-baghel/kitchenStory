@@ -61951,7 +61951,7 @@ var LoginForm = function LoginForm(props) {
       md: "8",
       controlId: "validationFormik02"
     }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Password"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
-      type: "text",
+      type: "password",
       name: "password",
       value: values.description,
       onChange: handleChange,
@@ -62205,7 +62205,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61129" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58805" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

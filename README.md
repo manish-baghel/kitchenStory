@@ -20,6 +20,10 @@ yarn start
 npm start
 ```
 
+### Default Login Credentials - 
+Email: p@q.com
+Password: q1w2e3r4#
+
 ### Note - The JSON Server by default runs on `3000` port and the frontend application relies on `3000` port if you want to run on different port then before running on different port please edit src/.env
 
 
